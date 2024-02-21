@@ -1,6 +1,7 @@
 // public/scripts.js
 
 function addMessage() {
+    console.log('Button clicked');
     var name = document.getElementById('name').value;
     var tool = document.getElementById('tool').value;
     var link = document.getElementById('link').value;
@@ -10,6 +11,18 @@ function addMessage() {
         var messageDiv = createMessageDiv(name, tool, link, quantity);
         var messagesDiv = document.getElementById('messages');
         messagesDiv.insertBefore(messageDiv, messagesDiv.firstChild);
+
+        // 输出 fetch 请求的 URL
+        console.log('Sending fetch request to:', '/submit');
+
+        // 发送 fetch 请求
+        fetch('/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ visitorName: name, toolNeeded: tool, toolWebsite: link, quantity: quantity }),
+        });
     } else {
         alert('請填寫完整信息！');
     }

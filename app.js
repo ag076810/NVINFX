@@ -11,6 +11,12 @@ mongoose.connect('mongodb+srv://ag076810:V3y8t16g@nvfx.cwu5qws.mongodb.net/?retr
   useUnifiedTopology: true,
 });
 
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('open', () => {
+  console.log('Connected to MongoDB');
+});
+
 // 設定模板引擎
 app.set('view engine', 'ejs');
 
@@ -35,6 +41,7 @@ app.get('/', async (req, res) => {
 
 // 提交留言路由
 app.post('/submit', async (req, res) => {
+  console.log('Global submit route triggered');
   const { visitorName, toolNeeded, toolWebsite, quantity } = req.body;
 
   // 創建新的留言
@@ -47,6 +54,7 @@ app.post('/submit', async (req, res) => {
 
   // 保存到資料庫
   await newMessage.save();
+  console.log('Message saved to the database.');
 
   res.redirect('/');
 });
