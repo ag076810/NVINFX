@@ -1,52 +1,41 @@
-/* public/styles.css */
-
+/* 在 public 資料夾下的 styles.css 中 */
 body {
-  font-family: 'NVIDIA Font', sans-serif;
-  background-color: #f8f8f8;
-  color: #333;
-  margin: 0;
-  padding: 0;
+    font-family: Arial, sans-serif;
 }
 
 h1 {
-  color: #76b900;
+    color: #0071c5;
 }
 
-div {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-  margin-top: 20px;
+#messageForm {
+    margin-bottom: 20px;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
+#messages {
+    border: 1px solid #0071c5;
+    padding: 10px;
+    margin-bottom: 20px;
 }
 
-label {
-  margin-bottom: 5px;
+.message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
 }
 
-input, textarea, button {
-  margin-bottom: 10px;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
+.message .name {
+    font-weight: bold;
+    color: #0071c5;
 }
 
-button {
-  background-color: #76b900;
-  color: #fff;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.message .tool, .message .link, .message .quantity {
+    display: block;
+    margin-top: 5px;
 }
 
-button:hover {
-  background-color: #5a9100;
+.message.pending {
+    background-color: #e6f7ff; /* 淺藍色 */
 }
 
-/* Add additional styles based on NVIDIA's design guidelines */
+/* 其他樣式... */
