@@ -1,0 +1,53 @@
+<!-- views/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>留言板</title>
+  <link rel="stylesheet" href="/style.css"> <!-- 引入CSS樣式 -->
+</head>
+<body>
+  <div>
+    <label for="name">您的名稱 (UserName):</label>
+    <input type="text" id="name">
+    <br>
+    <label for="tool">需要何項工具 (Which Tool):</label>
+    <input type="text" id="tool">
+    <br>
+    <label for="link">工具網站鏈接 (Tool Link):</label>
+    <input type="text" id="link">
+    <br>
+    <label for="quantity">數量 (Quantity):</label>
+    <input type="number" id="quantity">
+    <br>
+    <button onclick="addMessage()">留言 (Message)</button>
+  </div>
+
+  <div id="messages">
+    <% messages.forEach(message => { %>
+      <div class="message <%= message.approved ? '' : 'pending' %>" data-message-id="<%= message._id %>">
+        <strong><%= message.visitorName %></strong> said：
+        <br>需要工具 (Tool)：<%= message.toolNeeded %>
+        <% if (message.toolWebsite) { %>
+          <br>工具網站鏈接 (Tool Link)：<%= message.toolWebsite %>
+        <% } %>
+        <br>數量 (Quantity)：<%= message.quantity %>
+        <br>時間 (Date)：<%= message.messageTime.toLocaleString('en-GB', { hour12: false }) %>
+        <div class="actions">
+          <% if (!message.approved) { %>
+            <button onclick="approveMessage('<%= message._id %>')">等待批准 (Waiting for approval)</button>
+          <% } else { %>
+            <button onclick="completeMessage('<%= message._id %>')">已完成 (Finish)</button>
+          <% } %>
+          <button onclick="deleteMessage('<%= message._id %>')">刪除 (Delete)</button>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+
+  <script src="/scripts.js"></script> <!-- 引入JavaScript檔案 -->
+</body>
+</html>

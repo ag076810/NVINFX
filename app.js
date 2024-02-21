@@ -11,7 +11,13 @@ mongoose.connect('mongodb+srv://ag076810:V3y8t16g@nvfx.cwu5qws.mongodb.net/?retr
   useUnifiedTopology: true,
 });
 
-// 定義資料庫模型
+// 設定模板引擎
+app.set('view engine', 'ejs');
+
+// 使用靜態檔案中介軟體
+app.use(express.static('public'));
+
+// 資料庫模型
 const Message = mongoose.model('Message', {
   visitorName: String,
   toolNeeded: String,
@@ -20,12 +26,6 @@ const Message = mongoose.model('Message', {
   messageTime: { type: Date, default: Date.now },
   approved: { type: Boolean, default: false },
 });
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
-
-// 設定模板引擎
-app.set('view engine', 'ejs');
 
 // 首頁路由
 app.get('/', async (req, res) => {
