@@ -1,5 +1,3 @@
-<!-- views/index.ejs -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,10 +30,23 @@
     </form>
 
     <!-- 留言板 -->
+    <ul class="tabs">
+      <li class="<%= activeTab === 'pending' ? 'active' : '' %>"><a href="/pending">Pending Messages</a></li>
+      <li class="<%= activeTab === 'completed' ? 'active' : '' %>"><a href="/completed">Completed Messages</a></li>
+    </ul>
+
     <% messages.forEach(message => { %>
       <div class="message <%= message.approved ? 'completed' : (message.approved === false ? 'pending' : '') %>">
-        <p><strong><%= message.visitorName %></strong></p>
-        <p><strong>Required Tools:</strong> <br><%= message.toolNeeded %></p>
+        <p><strong><%= message.visitorName %></strong>
+          <% if (message.completed) { %>
+            (Completed)
+          <% } else if (message.approved === false) { %>
+            (Pending Approval)
+          <% } else if (message.approved === true) { %>
+            (Processing)
+          <% } %>
+        </p>
+        <p><br><strong>Required Tools:</strong> <br><%= message.toolNeeded %></p>
         <p><strong>Tools Website Link:</strong> <br><a href="<%= message.toolWebsite %>" target="_blank"><%= message.toolWebsite || 'Not Provided' %></a></p>
         <p><strong>Quantity:</strong> <br><%= message.quantity %></p>
         <p><strong>Timestamp:</strong> <br><%= message.messageTime.toLocaleString() %></p>
@@ -44,6 +55,10 @@
           <form action="/approve/<%= message._id %>" method="post">
             <button type="submit" class="button approve" <% if (message.approved === null) { %>disabled<% } %>>Pending Approval</button>
           </form>
+          <form action="/delete/<%= message._id %>" method="post">
+            <button type="submit" class="button delete" <% if (message.approved === null) { %>disabled<% } %>>Delete</button>
+          </form>
+        <% } else if (message.completed) { %>
           <form action="/delete/<%= message._id %>" method="post">
             <button type="submit" class="button delete" <% if (message.approved === null) { %>disabled<% } %>>Delete</button>
           </form>

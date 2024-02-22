@@ -3,12 +3,12 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 const app = express();
-// 使用 body-parser 中间件解析请求体
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
 const port = 3000;
 
-// 連接到MongoDB
 mongoose.connect('mongodb+srv://ag076810:V3y8t16g@nvfx.cwu5qws.mongodb.net/?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -20,13 +20,10 @@ db.once('open', () => {
   console.log('Connected to MongoDB');
 });
 
-// 設定模板引擎
 app.set('view engine', 'ejs');
 
-// 使用靜態檔案中介軟體
 app.use(express.static('public'));
 
-// 資料庫模型
 const Message = mongoose.model('Message', {
   visitorName: String,
   toolNeeded: String,
@@ -34,35 +31,13 @@ const Message = mongoose.model('Message', {
   quantity: Number,
   messageTime: { type: Date, default: Date.now },
   approved: { type: Boolean, default: false },
-  completed: { type: Boolean, default: false }, // 新增的字段
+  completed: { type: Boolean, default: false },
 });
-
-
-// 首页路由
-app.get('/', async (req, res) => {
-  try {
-    const messages = await Message.find({ completed: false }).sort({ messageTime: -1 });
-    res.render('index', { messages });
-  } catch (error) {
-    console.error('Error fetching messages:', error);
-    res.status(500).send('Error fetching messages');
-  }
-});
-
-
 
 // 提交留言路由
 app.post('/submit', async (req, res) => {
-  console.log('Global submit route triggered');
   const { visitorName, toolNeeded, toolWebsite, quantity } = req.body;
 
-  // 打印这些值
-  console.log('Visitor Name:', visitorName);
-  console.log('Tool Needed:', toolNeeded);
-  console.log('Tool Website:', toolWebsite);
-  console.log('Quantity:', quantity);
-
-  // 創建新的留言
   const newMessage = new Message({
     visitorName,
     toolNeeded,
@@ -70,16 +45,15 @@ app.post('/submit', async (req, res) => {
     quantity,
   });
 
-  // 保存到資料庫
   await newMessage.save();
   console.log('Message saved to the database.');
 
   res.redirect('/');
 });
 
+// 等待批准路由
 app.post('/approve/:id', async (req, res) => {
   const messageId = req.params.id;
-  console.log('messageId:', messageId);
 
   if (!mongoose.Types.ObjectId.isValid(messageId)) {
     console.error('Invalid message ID:', messageId);
@@ -101,10 +75,11 @@ app.post('/approve/:id', async (req, res) => {
     res.redirect('/');
   } catch (error) {
     console.error('Error approving message:', error);
-    res.status(500).send('Error approving message: ' + error.message); // 修改此行，将错误消息返回给客户端
+    res.status(500).send('Error approving message: ' + error.message);
   }
 });
 
+// 完成留言路由
 app.post('/complete/:id', async (req, res) => {
   const messageId = req.params.id;
 
@@ -132,20 +107,51 @@ app.post('/complete/:id', async (req, res) => {
   }
 });
 
-
-
-
 // 刪除留言路由
 app.post('/delete/:id', async (req, res) => {
   const messageId = req.params.id;
 
-  // 刪除留言
   await Message.findByIdAndDelete(messageId);
 
   res.redirect('/');
 });
 
-// 啟動伺服器
+// 首页路由，默认显示未完成的留言
+app.get('/', async (req, res) => {
+  try {
+    const pendingMessages = await Message.find({ completed: false }).sort({ messageTime: -1 });
+
+    res.render('index', { messages: pendingMessages, activeTab: 'pending' });
+  } catch (error) {
+    console.error('Error fetching pending messages:', error);
+    res.status(500).send('Error fetching pending messages');
+  }
+});
+
+// 未完成留言的路由
+app.get('/pending', async (req, res) => {
+  try {
+    const pendingMessages = await Message.find({ completed: false }).sort({ messageTime: -1 });
+
+    res.render('index', { messages: pendingMessages, activeTab: 'pending' });
+  } catch (error) {
+    console.error('Error fetching pending messages:', error);
+    res.status(500).send('Error fetching pending messages');
+  }
+});
+
+// 已完成留言的路由
+app.get('/completed', async (req, res) => {
+  try {
+    const completedMessages = await Message.find({ completed: true }).sort({ messageTime: -1 });
+
+    res.render('index', { messages: completedMessages, activeTab: 'completed' });
+  } catch (error) {
+    console.error('Error fetching completed messages:', error);
+    res.status(500).send('Error fetching completed messages');
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
