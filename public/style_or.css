@@ -65,11 +65,6 @@ button:hover {
     background-color: #2c2c2c; /* Darker background for messages */
     color: #ffffff; /* White text */
     border-radius: 5px; /* Add border-radius for rounded corners */
-    overflow: hidden; /* 防止文字溢出边界 */
-}
-
-.message p {
-    margin: 0; /* 清除段落的默认外边距 */
 }
 
 .message.pending {
