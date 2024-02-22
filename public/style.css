@@ -1,7 +1,5 @@
 /* public/style.css */
 
-/* 共用樣式 */
-
 body {
     font-family: 'Nvidia', Arial, sans-serif;
     margin: 20px;
@@ -25,11 +23,13 @@ ul.tabs {
     padding: 0;
     margin: 20px 0;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
 }
 
 ul.tabs li {
     margin-right: 10px;
+    margin-bottom: 10px;
 }
 
 ul.tabs li a {
@@ -40,6 +40,7 @@ ul.tabs li a {
     background-color: #0a0a0a;
     color: #76b900;
     transition: background-color 0.3s, color 0.3s;
+    width: 100%;
 }
 
 ul.tabs li.active a {
@@ -122,6 +123,15 @@ button:hover {
     right: 10px;
 }
 
+/* 修改超链接颜色为蓝色 */
+a {
+    color: blue;
+}
+
+a:hover {
+    color: darkblue;
+}
+
 /* 螢幕尺寸大於等於 1200px 時的樣式 */
 @media screen and (min-width: 1200px) {
     .container {
@@ -148,13 +158,4 @@ button:hover {
     .container {
         width: 95%;
     }
-}
-
-/* 修改超链接颜色为蓝色 */
-a {
-    color: blue;
-}
-
-a:hover {
-    color: darkblue;
 }
