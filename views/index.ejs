@@ -36,7 +36,7 @@
       <div class="message <%= message.approved ? 'completed' : (message.approved === false ? 'pending' : '') %>">
         <p><strong><%= message.visitorName %></strong></p>
         <p><strong>Required Tools:</strong> <br><%= message.toolNeeded %></p>
-        <p><strong>Tools Website Link:</strong> <br><%= message.toolWebsite || 'Not Provided' %></p>
+        <p><strong>Tools Website Link:</strong> <br><a href="<%= message.toolWebsite %>" target="_blank"><%= message.toolWebsite || 'Not Provided' %></a></p>
         <p><strong>Quantity:</strong> <br><%= message.quantity %></p>
         <p><strong>Timestamp:</strong> <br><%= message.messageTime.toLocaleString() %></p>
 
