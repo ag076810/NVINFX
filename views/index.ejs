@@ -2,52 +2,63 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style.css">
   <title>留言板</title>
-  <link rel="stylesheet" href="/style.css"> <!-- 引入CSS樣式 -->
 </head>
+
 <body>
-  <div>
-    <label for="name">您的名稱 (UserName):</label>
-    <input type="text" id="name">
-    <br>
-    <label for="tool">需要何項工具 (Which Tool):</label>
-    <input type="text" id="tool">
-    <br>
-    <label for="link">工具網站鏈接 (Tool Link):</label>
-    <input type="text" id="link">
-    <br>
-    <label for="quantity">數量 (Quantity):</label>
-    <input type="number" id="quantity">
-    <br>
-    <button onclick="addMessage()">留言 (Message)</button>
-  </div>
+  <div class="container">
+    <h1>NV Team Requests Board</h1>
 
-  <div id="messages">
+    <!-- 留言表单 -->
+    <form action="/submit" method="post">
+      <label for="visitorName">Name:</label>
+      <input type="text" name="visitorName" required>
+      <br>
+      <label for="toolNeeded">Required Tools:</label>
+      <input type="text" name="toolNeeded" required>
+      <br>
+      <label for="toolWebsite">Tools Website Link:</label>
+      <input type="text" name="toolWebsite">
+      <br>
+      <label for="quantity">Quantity:</label>
+      <input type="number" name="quantity" required>
+      <br>
+      <button type="submit">Leave a Message</button>
+    </form>
+
+    <!-- 留言板 -->
     <% messages.forEach(message => { %>
-      <div class="message <%= message.approved ? '' : 'pending' %>" data-message-id="<%= message._id %>">
-        <strong><%= message.visitorName %></strong> said：
-        <br>需要工具 (Tool)：<%= message.toolNeeded %>
-        <% if (message.toolWebsite) { %>
-          <br>工具網站鏈接 (Tool Link)：<%= message.toolWebsite %>
-        <% } %>
-        <br>數量 (Quantity)：<%= message.quantity %>
-        <br>時間 (Date)：<%= message.messageTime.toLocaleString('en-GB', { hour12: false }) %>
-        <div class="actions">
-          <% if (!message.approved) { %>
-            <button onclick="approveMessage('<%= message._id %>')">等待批准 (Waiting for approval)</button>
-          <% } else { %>
-            <button onclick="completeMessage('<%= message._id %>')">已完成 (Finish)</button>
-          <% } %>
-          <button onclick="deleteMessage('<%= message._id %>')">刪除 (Delete)</button>
-        </div>
-      </div>
-    <% }); %>
-  </div>
+      <div class="message <%= message.approved ? 'completed' : (message.approved === false ? 'pending' : '') %>">
+        <p><strong><%= message.visitorName %></strong></p>
+        <p>Required Tools: <%= message.toolNeeded %></p>
+        <p>Tools Website Link: <%= message.toolWebsite || 'Not Provided' %></p>
+        <p>Quantity: <%= message.quantity %></p>
+        <p>Timestamp: <%= message.messageTime.toLocaleString() %></p>
 
-  <script src="/scripts.js"></script> <!-- 引入JavaScript檔案 -->
+        <% if (!message.approved) { %>
+          <form action="/approve/<%= message._id %>" method="post">
+            <button type="submit" class="button approve" <% if (message.approved === null) { %>disabled<% } %>>Pending Approval</button>
+          </form>
+          <form action="/delete/<%= message._id %>" method="post">
+            <button type="submit" class="button delete" <% if (message.approved === null) { %>disabled<% } %>>Delete</button>
+          </form>
+        <% } else { %>
+          <form action="/complete/<%= message._id %>" method="post">
+            <button type="submit" class="button complete" <% if (message.approved === null) { %>disabled<% } %>>Complete</button>
+          </form>
+          <form action="/delete/<%= message._id %>" method="post">
+            <button type="submit" class="button delete" <% if (message.approved === null) { %>disabled<% } %>>刪除</button>
+          </form>
+        <% } %>
+      </div>
+    <% }) %>
+
+  </div>
 </body>
+
 </html>

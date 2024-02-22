@@ -1,72 +1,52 @@
 // public/scripts.js
 
-function addMessage() {
-    console.log('Button clicked');
-    var name = document.getElementById('name').value;
-    var tool = document.getElementById('tool').value;
-    var link = document.getElementById('link').value;
-    var quantity = document.getElementById('quantity').value;
+document.addEventListener('DOMContentLoaded', () => {
+  const approveButtons = document.querySelectorAll('.button.approve');
+  const completeButtons = document.querySelectorAll('.button.complete');
+  const deleteButtons = document.querySelectorAll('.button.delete');
 
-    if (name && tool && quantity) {
-        var messageDiv = createMessageDiv(name, tool, link, quantity);
-        var messagesDiv = document.getElementById('messages');
-        messagesDiv.insertBefore(messageDiv, messagesDiv.firstChild);
-
-        // 输出 fetch 请求的 URL
-        console.log('Sending fetch request to:', '/submit');
-
-        // 发送 fetch 请求
-        fetch('/submit', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ visitorName: name, toolNeeded: tool, toolWebsite: link, quantity: quantity }),
-        });
-    } else {
-        alert('請填寫完整信息！');
-    }
-}
-
-function createMessageDiv(name, tool, link, quantity) {
-    var messageDiv = document.createElement('div');
-    messageDiv.className = 'message';
-    messageDiv.innerHTML = `
-        <strong>${name}</strong> said：
-        <br>需要工具 (Tool)：${tool}
-        ${link ? `<br>工具網站鏈接 (Tool Link)：${link}` : ''}
-        <br>數量 (Quantity)：${quantity}
-        <br>時間 (Date)：${new Date().toLocaleString('en-GB', { hour12: false })}
-        <div class="actions">
-            <button onclick="approveMessage(this.parentElement.parentElement)">等待批准 (Waiting for approval)</button>
-            <button onclick="deleteMessage(this.parentElement.parentElement)">刪除 (Delete)</button>
-        </div>
-    `;
-
-    return messageDiv;
-}
-
-function completeMessage(messageId) {
-    messageDiv.remove();
-    // 在資料庫中刪除留言
-    var messageId = messageDiv.dataset.messageId;
-    fetch(`/delete/${messageId}`, { method: 'POST' });
-}
-
-function approveMessage(messageDiv) {
-    messageDiv.classList.add('pending');
-    var buttons = messageDiv.querySelector('.actions').querySelectorAll('button');
-    buttons.forEach(button => {
-        if (button.textContent === '等待批准 (Waiting for approval)') {
-            button.textContent = '已完成 (Finish)';
-            button.onclick = () => completeMessage(messageDiv.dataset.messageId);
-        }
+  approveButtons.forEach(button => {
+    button.addEventListener('click', async (event) => {
+      event.preventDefault();
+      const messageId = button.closest('.message').dataset.messageId;
+      await approveMessage(messageId);
     });
-}
+  });
 
-function deleteMessage(messageDiv) {
-    messageDiv.remove();
-    // 在資料庫中刪除留言
-    var messageId = messageDiv.dataset.messageId;
-    fetch(`/delete/${messageId}`, { method: 'POST' });
-}
+  completeButtons.forEach(button => {
+    button.addEventListener('click', async (event) => {
+      event.preventDefault();
+      const messageId = button.closest('.message').dataset.messageId;
+      await completeMessage(messageId);
+    });
+  });
+
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', async (event) => {
+      event.preventDefault();
+      const messageId = button.closest('.message').dataset.messageId;
+      await deleteMessage(messageId);
+    });
+  });
+
+  async function approveMessage(messageId) {
+    // 发送异步请求将消息标记为已批准
+    await fetch(`/approve/${messageId}`, { method: 'POST' });
+    // 刷新页面或更新前端状态
+    location.reload();
+  }
+
+  async function completeMessage(messageId) {
+    // 发送异步请求将消息标记为已完成
+    await fetch(`/complete/${messageId}`, { method: 'POST' });
+    // 刷新页面或更新前端状态
+    location.reload();
+  }
+
+  async function deleteMessage(messageId) {
+    // 发送异步请求删除消息
+    await fetch(`/delete/${messageId}`, { method: 'POST' });
+    // 刷新页面或更新前端状态
+    location.reload();
+  }
+});

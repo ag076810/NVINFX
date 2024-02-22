@@ -1,32 +1,56 @@
+/* public/style.css */
+
 body {
     font-family: 'Nvidia', Arial, sans-serif;
     margin: 20px;
-    background-color: #1c1c1c;
-    color: #ffffff;
+    background-color: #1c1c1c; /* Dark background */
+    color: #ffffff; /* White text */
 }
 
 h1 {
-    color: #76b900;
+    color: #76b900; /* Nvidia green */
+    margin-bottom: 20px;
+    text-align: center; /* Center the text */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the form items */
+    margin-bottom: 20px; /* Add margin to bottom for separation from messages */
 }
 
 label {
-    color: #ffffff;
+    color: #ffffff; /* White text for labels */
+    margin-bottom: 5px;
+    text-align: left; /* Align label text to the left */
 }
 
 input {
-    background-color: #2c2c2c;
-    color: #ffffff;
-    border: 1px solid #76b900;
-    padding: 5px;
-    margin-bottom: 10px;
+    background-color: #2c2c2c; /* Darker background for input fields */
+    color: #ffffff; /* White text */
+    border: 1px solid #76b900; /* Nvidia green border */
+    padding: 8px;
+    margin-bottom: 15px;
+    width: calc(100% - 16px); /* Set width to 100% minus padding */
+    box-sizing: border-box;
+    border-radius: 5px; /* Add border-radius for rounded corners */
 }
 
 button {
-    background-color: #76b900;
-    color: #ffffff;
-    padding: 8px 15px;
+    background-color: #76b900; /* Nvidia green for buttons */
+    color: #ffffff; /* White text */
+    padding: 10px 15px;
     border: none;
     cursor: pointer;
+    width: 50%; /* Set button width to 50% */
+    margin-top: 15px; /* Add margin to top for separation */
+    margin-bottom: 20px; /* Add margin to bottom for separation from messages */
+    border-radius: 5px; /* Add border-radius for rounded corners */
+}
+
+button:hover {
+    opacity: 0.8;
 }
 
 #messages {
@@ -34,25 +58,31 @@ button {
 }
 
 .message {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
+    border: 1px solid #4caf50; /* Nvidia green border */
+    padding: 15px;
+    margin-bottom: 20px;
     position: relative;
-    background-color: #2c2c2c;
-    color: #ffffff;
+    background-color: #2c2c2c; /* Darker background for messages */
+    color: #ffffff; /* White text */
+    border-radius: 5px; /* Add border-radius for rounded corners */
 }
 
 .message.pending {
-    background-color: #aaffaa;
-    color: #000000;
+    background-color: #555; /* Dark gray for pending messages */
+}
+
+.message.completed {
+    background-color: #aaffaa; /* Light green for completed messages */
+    color: #000000; /* Black text for completed messages */
 }
 
 .actions {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 10px;
+    right: 10px;
 }
 
-button {
-    margin-left: 5px;
+/* Hover effect on buttons */
+button:hover {
+    opacity: 0.8;
 }
