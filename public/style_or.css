@@ -3,7 +3,7 @@
 body {
     font-family: 'Nvidia', Arial, sans-serif;
     margin: 20px;
-    background-color: #1c1c1c; /* Dark background */
+    background-color: #0a0a0a; /* Dark background with a hint of black */
     color: #ffffff; /* White text */
 }
 
@@ -11,6 +11,38 @@ h1 {
     color: #76b900; /* Nvidia green */
     margin-bottom: 20px;
     text-align: center; /* Center the text */
+}
+
+.container {
+    width: 80%; /* Set a width for the container */
+    margin: 0 auto; /* Center the container */
+}
+
+ul.tabs {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    display: flex; /* Use flexbox for better alignment */
+    justify-content: center; /* Center the tabs horizontally */
+}
+
+ul.tabs li {
+    margin-right: 10px;
+}
+
+ul.tabs li a {
+    text-decoration: none;
+    padding: 10px;
+    border: 1px solid #76b900; /* Nvidia green border */
+    border-radius: 5px 5px 0 0; /* Rounded corners only on top */
+    background-color: #0a0a0a; /* Dark background */
+    color: #76b900; /* Nvidia green text */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+ul.tabs li.active a {
+    background-color: #76b900;
+    color: #ffffff; /* White text on active tab */
 }
 
 form {
@@ -27,7 +59,7 @@ label {
 }
 
 input {
-    background-color: #2c2c2c; /* Darker background for input fields */
+    background-color: #212121; /* Darker background for input fields */
     color: #ffffff; /* White text */
     border: 1px solid #76b900; /* Nvidia green border */
     padding: 8px;
@@ -47,33 +79,40 @@ button {
     margin-top: 15px; /* Add margin to top for separation */
     margin-bottom: 20px; /* Add margin to bottom for separation from messages */
     border-radius: 5px; /* Add border-radius for rounded corners */
+    transition: opacity 0.3s;
 }
 
 button:hover {
     opacity: 0.8;
 }
 
-#messages {
-    margin-top: 20px;
-}
-
+/* Message styling */
 .message {
-    border: 1px solid #4caf50; /* Nvidia green border */
+    border: 1px solid #76b900; /* Nvidia green border */
     padding: 15px;
     margin-bottom: 20px;
     position: relative;
-    background-color: #2c2c2c; /* Darker background for messages */
-    color: #ffffff; /* White text */
     border-radius: 5px; /* Add border-radius for rounded corners */
+    overflow: hidden; /* Prevent text from overflowing */
+}
+
+.message p {
+    margin: 0; /* Clear default margin for paragraphs */
 }
 
 .message.pending {
-    background-color: #555; /* Dark gray for pending messages */
+    background-color: #424242; /* Dark gray for pending messages */
+    color: #ffffff; /* White text */
 }
 
 .message.completed {
-    background-color: #aaffaa; /* Light green for completed messages */
+    background-color: #d3fcd5; /* Light green for completed messages */
     color: #000000; /* Black text for completed messages */
+}
+
+.message.approved {
+    background-color: #9bd4f0; /* Light blue for approved messages */
+    color: #000000; /* Black text for approved messages */
 }
 
 .actions {
@@ -82,7 +121,12 @@ button:hover {
     right: 10px;
 }
 
-/* Hover effect on buttons */
-button:hover {
-    opacity: 0.8;
+
+/* 修改超链接颜色为蓝色 */
+a {
+  color: blue;
+}
+
+a:hover {
+  color: darkblue;
 }
