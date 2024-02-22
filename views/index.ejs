@@ -35,10 +35,10 @@
     <% messages.forEach(message => { %>
       <div class="message <%= message.approved ? 'completed' : (message.approved === false ? 'pending' : '') %>">
         <p><strong><%= message.visitorName %></strong></p>
-        <p>Required Tools: <br><%= message.toolNeeded %></p>
-        <p>Tools Website Link: <br><%= message.toolWebsite || 'Not Provided' %></p>
-        <p>Quantity: <br><%= message.quantity %></p>
-        <p>Timestamp: <br><%= message.messageTime.toLocaleString() %></p>
+        <p><strong>Required Tools:</strong> <br><%= message.toolNeeded %></p>
+        <p><strong>Tools Website Link:</strong> <br><%= message.toolWebsite || 'Not Provided' %></p>
+        <p><strong>Quantity:</strong> <br><%= message.quantity %></p>
+        <p><strong>Timestamp:</strong> <br><%= message.messageTime.toLocaleString() %></p>
 
         <% if (!message.approved) { %>
           <form action="/approve/<%= message._id %>" method="post">
